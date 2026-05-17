@@ -15,7 +15,7 @@ const server = http.createServer(app)
 
 // initialize socet.io server 
 export const io = new Server(server,{
-    cors:{origin:"*"}
+    cors:{origin:"https://chat-application-adw0.onrender.com", credentials:true}
 })
 
 // store online users 
@@ -43,7 +43,10 @@ io.on("connection",(socket)=>{
 
 // Middleware setup
 app.use(express.json({limit:"20mb"}))
-app.use(cors())
+app.use(cors({
+    origin: "https://chat-application-adw0.onrender.com",
+    credentials: true
+}))
 
 // Routes setup
 app.use("/api/status", (req , res)=>res.send("server is live"))

@@ -17,7 +17,7 @@ export const AuthProvider = ({children})=>{
         const [socket, setSocket] = useState(null)
 
           // Axios base config
-  axios.defaults.baseURL = "http://localhost:5000";  // backend ka base URL
+  axios.defaults.baseURL = "https://chat-application-adw0.onrender.com";  // backend ka base URL
   if (token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
