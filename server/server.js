@@ -15,7 +15,7 @@ const server = http.createServer(app)
 
 // initialize socet.io server 
 export const io = new Server(server,{
-    cors:{origin:"https://chat-application-adw0.onrender.com", credentials:true}
+    cors:{origin:"https://chat-application-psi-pink.vercel.app", credentials:true}
 })
 
 // store online users 
@@ -44,7 +44,7 @@ io.on("connection",(socket)=>{
 // Middleware setup
 app.use(express.json({limit:"20mb"}))
 app.use(cors({
-    origin: "https://chat-application-adw0.onrender.com",
+    origin: "https://chat-application-psi-pink.vercel.app",
     credentials: true
 }))
 
