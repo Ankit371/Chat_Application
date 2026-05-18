@@ -46,7 +46,7 @@ export const AuthProvider = ({children})=>{
                 if(data.success){
                     setAuthUser(data.userData)
                     connectSocket(data.userData)
-                    axios.defaults.headers.common["token"] = data.token
+                    axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`
                     setToken(data.token)
 
                     localStorage.setItem("token",data.token)
@@ -57,7 +57,7 @@ export const AuthProvider = ({children})=>{
                 }
 
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.message || "Login failed")
         }
     }
 
@@ -67,48 +67,29 @@ const logout = async () => {
     setToken(null)
     setAuthUser(null)
     setOnlineUser([])
-    axios.defaults.headers.common["token"] = null
+    axios.defaults.headers.common["Authorization"] = null
     toast.success("Logged out Successfully")
-    socket.disconnect();
+    socket?.disconnect();
 }
 
 // Update profile function to handle user profile updates 
 
     const updateProfile = async (body) => {
         try {
-
-
-                 console.log("Current token:", axios.defaults.headers.common["token"]);
-
             const {data} = await axios.put("/api/auth/update-Profile", body,
                 {
                     headers:{
-                        token:token
+                        "Authorization": `Bearer ${token}`
                     }
                 }
             )
-
-    //               const { data } = await axios.put(
-    //   "http://localhost:5000/api/auth/update-profile",
-    //   body,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //         "Content-Type": "application/json",
-    //          // 👈 yaha Bearer + token bhejna zaroori hai
-    //     },
-    //   }
-    // );
-
-
 
             if(data.success){
                 setAuthUser(data.user);
                 toast.success("profile update successfully")
             }
         } catch (error) {
-                    console.log("Update profile error:", error.response?.data || error.message);
-
+            console.log("Update profile error:", error.response?.data || error.message);
             toast.error(error.message)
         }
     }
@@ -133,9 +114,9 @@ const logout = async () => {
 
         useEffect(()=>{
             if(token){
-                axios.defaults.headers.common["token"] = token 
+                axios.defaults.headers.common["Authorization"] = `Bearer ${token}` 
             }
-        },[])
+        },[token])
 
 
             const value = {
