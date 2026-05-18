@@ -1,5 +1,4 @@
 
-
 // middleware to protect routes 
 
 import User from "../models/User.js";
@@ -7,11 +6,12 @@ import jwt from "jsonwebtoken"
 
 export const protectRoute = async (req , res , next )=>{
         try {
-            const token = req.headers.token;
+            // Check Authorization header first, then fallback to token header
+            let token = req.headers.authorization?.split(" ")[1] || req.headers.token;
 
+            if(!token) return res.json({success:false, message:"No token provided"})
 
             const decoded = jwt.verify(token , process.env.JWT_SECRET)
-
 
             const user = await User.findById(decoded.userId).select("-password")
 

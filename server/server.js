@@ -15,7 +15,11 @@ const server = http.createServer(app)
 
 // initialize socet.io server 
 export const io = new Server(server,{
-    cors:{origin:"https://chat-application-psi-pink.vercel.app", credentials:true}
+    cors:{
+        origin: ["https://chat-application-psi-pink.vercel.app", "http://localhost:5173", "http://localhost:5174"],
+        credentials:true,
+        methods: ["GET", "POST"]
+    }
 })
 
 // store online users 
@@ -44,8 +48,10 @@ io.on("connection",(socket)=>{
 // Middleware setup
 app.use(express.json({limit:"20mb"}))
 app.use(cors({
-    origin: "https://chat-application-psi-pink.vercel.app",
-    credentials: true
+    origin: ["https://chat-application-psi-pink.vercel.app", "http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "token"]
 }))
 
 // Routes setup
