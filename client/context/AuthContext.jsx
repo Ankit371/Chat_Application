@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import {io} from 'socket.io-client'
 
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL
+const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://chat-application-adw0.onrender.com"
 axios.defaults.baseURL= backendUrl
 
 export const AuthContext = createContext();
@@ -16,8 +16,8 @@ export const AuthProvider = ({children})=>{
         const [onlineUser, setOnlineUser] = useState([])
         const [socket, setSocket] = useState(null)
 
-          // Axios base config
-  axios.defaults.baseURL = "https://chat-application-adw0.onrender.com";  // backend ka base URL
+          // Axios base config - already set above
+  console.log("Backend URL:", axios.defaults.baseURL);
   if (token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
