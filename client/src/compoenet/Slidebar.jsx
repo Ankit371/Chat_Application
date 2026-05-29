@@ -8,17 +8,17 @@ const Slidebar = () => {
 
   const {getUsers, users, selectedUser, setSelectedUser, 
     unseenMessage, setUnseenMessage} = useContext(ChatContext)
-          const {logout , onlineUser} = useContext(AuthContext)
+  const {logout , onlineUser} = useContext(AuthContext)
 
-          const [input , setInput] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    const filteredUsers = input ? users.filter((user)=>user.fullName.toLowerCase().includes(input.toLowerCase())) : users;
+  const filteredUsers = searchTerm ? users.filter((user) => user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) : users;
 
-        useEffect(()=>{
-          getUsers();
-        },[onlineUser])
+  useEffect(() => {
+    getUsers()
+  }, [])
     
   return (
     <div className={`bg-[#8185B2]/10 h-full p-5 rounded-r-xl overflow-y-scroll 
@@ -42,7 +42,7 @@ const Slidebar = () => {
 
             <div className='bg-[#282142] rounded-full flex items-center gap-2 py-3 px-4 mt-5 '>
                 <img src={assets.search_icon} alt="Search" className='w-3' />
-                <input onChange={(e)=>setInput(e.target.value)} type="text" className='bg-transparent border-none outline-none 
+                <input onChange={(e)=>setSearchTerm(e.target.value)} type="text" className='bg-transparent border-none outline-none 
                 text-white text-xs placeholder-[#c8c8c8] flex-1' placeholder='Search User' />
             </div>
         </div>

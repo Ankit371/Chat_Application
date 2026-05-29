@@ -92,18 +92,37 @@ export const AuthProvider = ({ children }) => {
   }
 
   const connectSocket = (userData) => {
-    if (!userData || socket?.connected) return
+    if (!userData) return
+
+    if (socket?.connected) {
+      return
+    }
+
     const newSocket = io(backendUrl, {
       query: {
         userId: userData._id,
       },
+      autoConnect: false,
     })
-    newSocket.connect()
-    setSocket(newSocket)
 
-    newSocket.on('getOnline Users', (userIds) => {
+    newSocket.on('connect', () => {
+      console.log('Socket connected:', newSocket.id)
+    })
+
+    newSocket.on('connect_error', (err) => {
+      console.error('Socket connect error:', err.message)
+    })
+
+    newSocket.on('getOnlineUsers', (userIds) => {
       setOnlineUser(userIds)
     })
+
+    newSocket.on('disconnect', () => {
+      setOnlineUser([])
+    })
+
+    newSocket.connect()
+    setSocket(newSocket)
   }
 
   useEffect(() => {
@@ -112,6 +131,12 @@ export const AuthProvider = ({ children }) => {
       checkAuth()
     }
   }, [token])
+
+  useEffect(() => {
+    return () => {
+      socket?.disconnect()
+    }
+  }, [socket])
 
   const value = {
     axios,
